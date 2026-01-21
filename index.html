@@ -53,21 +53,25 @@
     const q = document.getElementById('q');
     let links = [];
 
-    function render(list) {
+function render(list) {
   grid.innerHTML = '';
   for (const item of list) {
+    const a = document.createElement('a');
     a.className = 'card';
     a.href = item.url;
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
+    a.dataset.id = item.id || item.url;
+
     a.innerHTML = `
       <div class="name">${escapeHtml(item.name)}</div>
       <p class="desc">${escapeHtml(item.desc || item.url)}</p>
     `;
     grid.appendChild(a);
   }
-  enableDrag(); // ✅ 搜索/重渲染后也能拖拽
+  enableDrag();
 }
+
 
 
 
@@ -154,5 +158,6 @@ function applySavedOrder(list) {
   </script>
 </body>
 </html>
+
 
 

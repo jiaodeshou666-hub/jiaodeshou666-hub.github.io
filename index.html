@@ -66,6 +66,10 @@
           <p class="desc">${escapeHtml(item.desc || item.url)}</p>
         `;
         grid.appendChild(a);
+        const a = document.createElement('a'); //增加的排列顺序功能
+        a.dataset.id = item.id || item.url;
+
+
       }
     }
 
@@ -75,8 +79,10 @@
 
     async function init() {
       const res = await fetch('./links.json', { cache: 'no-store' });
-      links = await res.json();
+      links = applySavedOrder(await res.json());
       render(links);
+      enableDrag();
+
 
       q.addEventListener('input', () => {
         const kw = q.value.trim().toLowerCase();
@@ -89,6 +95,66 @@
       });
     }
     init();
+    
+let dragSrcEl = null; //增加了功能-排列图标
+
+function enableDrag() {
+  const cards = document.querySelectorAll('.card');
+
+  cards.forEach(card => {
+    card.draggable = true;
+
+    card.addEventListener('dragstart', e => {
+      dragSrcEl = card;
+      card.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    card.addEventListener('dragend', () => {
+      card.style.opacity = '';
+      saveOrder();
+    });
+
+    card.addEventListener('dragover', e => {
+      e.preventDefault();
+      return false;
+    });
+
+    card.addEventListener('drop', e => {
+      e.stopPropagation();
+      if (dragSrcEl !== card) {
+        const srcNext = dragSrcEl.nextSibling === card ? dragSrcEl : dragSrcEl.nextSibling;
+        grid.insertBefore(dragSrcEl, card);
+        grid.insertBefore(card, srcNext);
+      }
+      return false;
+    });
+  });
+}
+
+function saveOrder() {
+  const ids = [...document.querySelectorAll('.card')].map(c => c.dataset.id);
+  localStorage.setItem('link-order', JSON.stringify(ids));
+}
+
+function applySavedOrder(list) {
+  const saved = JSON.parse(localStorage.getItem('link-order') || '[]');
+  if (!saved.length) return list;
+
+  const map = new Map(list.map(i => [(i.id || i.url), i]));
+  const ordered = [];
+
+  saved.forEach(id => {
+    if (map.has(id)) {
+      ordered.push(map.get(id));
+      map.delete(id);
+    }
+  });
+
+  return ordered.concat([...map.values()]);
+}
+
   </script>
 </body>
 </html>
+

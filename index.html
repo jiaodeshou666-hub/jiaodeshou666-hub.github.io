@@ -54,24 +54,22 @@
     let links = [];
 
     function render(list) {
-      grid.innerHTML = '';
-      for (const item of list) {
-        const a = document.createElement('a');
-        a.className = 'card';
-        a.href = item.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.innerHTML = `
-          <div class="name">${escapeHtml(item.name)}</div>
-          <p class="desc">${escapeHtml(item.desc || item.url)}</p>
-        `;
-        grid.appendChild(a);
-        const a = document.createElement('a'); //增加的排列顺序功能
-        a.dataset.id = item.id || item.url;
+  grid.innerHTML = '';
+  for (const item of list) {
+    a.className = 'card';
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.innerHTML = `
+      <div class="name">${escapeHtml(item.name)}</div>
+      <p class="desc">${escapeHtml(item.desc || item.url)}</p>
+    `;
+    grid.appendChild(a);
+  }
+  enableDrag(); // ✅ 搜索/重渲染后也能拖拽
+}
 
 
-      }
-    }
 
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -81,7 +79,6 @@
       const res = await fetch('./links.json', { cache: 'no-store' });
       links = applySavedOrder(await res.json());
       render(links);
-      enableDrag();
 
 
       q.addEventListener('input', () => {
@@ -157,4 +154,5 @@ function applySavedOrder(list) {
   </script>
 </body>
 </html>
+
 

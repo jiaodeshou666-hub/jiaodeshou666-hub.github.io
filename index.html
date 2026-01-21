@@ -14,7 +14,18 @@
     .wrap { max-width: 960px; margin: 0 auto; padding: 40px 16px 64px; }
     h1 { font-size: 28px; margin: 0 0 8px; }
     p { margin: 0 0 18px; opacity: .9; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+    .sections { display: flex; flex-direction: column; gap: 18px; }
+    .section { padding: 8px 0; }
+    .section-title { font-size: 18px; margin: 0 0 10px; letter-spacing: .5px; }
+    .section.empty { display: none; }
+    .dragging .section.empty { display: block; opacity: .6; }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 220px));
+      gap: 14px;
+      justify-content: start;
+      min-height: 48px;
+    }
     a.card {
       display: block; padding: 14px 14px; border-radius: 16px;
       background: var(--card-bg); border: 1px solid var(--card-bd);
@@ -26,12 +37,30 @@
     .favicon { width: 18px; height: 18px; border-radius: 4px; flex: 0 0 18px; }
     .name { font-weight: 700; font-size: 16px; margin: 0; }
     .desc { font-size: 13px; opacity: .85; margin: 0; }
+    .card.is-dragging { opacity: .6; }
+    .drag-handle {
+      margin-left: auto;
+      width: 22px; height: 22px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 6px; cursor: grab;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      font-size: 12px; line-height: 1;
+      user-select: none;
+    }
+    .drag-handle:active { cursor: grabbing; }
     .topbar { display:flex; gap:10px; align-items:center; margin: 18px 0 18px; }
     input {
       width: 100%; padding: 12px 12px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,.25); outline: none;
       background: rgba(0,0,0,.25); color: #fff;
     }
+    select {
+      padding: 12px 10px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25); outline: none;
+      background: rgba(0,0,0,.25); color: #fff;
+    }
+    option { color: #000; }
     .footer { opacity: .75; margin-top: 18px; font-size: 12px; }
   </style>
 </head>
@@ -42,38 +71,85 @@
 
       <div class="topbar">
         <input id="q" placeholder="搜索（按名称/描述）…" />
+        <select id="cat">
+          <option value="">全部</option>
+          <option value="学习">学习</option>
+          <option value="娱乐">娱乐</option>
+          <option value="工具">工具</option>
+          <option value="未分类">未分类</option>
+        </select>
       </div>
 
-      <div id="grid" class="grid"></div>
+      <div id="grid" class="sections"></div>
     </div>
   </div>
 
   <script>
     const grid = document.getElementById('grid');
     const q = document.getElementById('q');
+    const cat = document.getElementById('cat');
     let links = [];
+    const DEFAULT_CATEGORY = '未分类';
+    const BASE_OPTIONS = Array.from(cat.options).map(o => ({ value: o.value, label: o.textContent }));
+    const BASE_CATEGORIES = BASE_OPTIONS.map(o => o.value);
+    let extraCategories = [];
+
+function getCategoryName(item) {
+  return (item.category || '').trim() || DEFAULT_CATEGORY;
+}
 
 function render(list) {
   grid.innerHTML = '';
+  const groups = new Map();
   for (const item of list) {
-    const a = document.createElement('a');
-    a.className = 'card';
-    a.href = item.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.dataset.id = item.id || item.url;
-
-    const faviconUrl = getFaviconUrl(item.url);
-    a.innerHTML = `
-      <div class="card-head">
-        <img class="favicon" src="${escapeHtml(faviconUrl)}" alt="">
-        <div class="name">${escapeHtml(item.name)}</div>
-      </div>
-      <p class="desc">${escapeHtml(item.desc || item.url)}</p>
-    `;
-    grid.appendChild(a);
+    const catName = getCategoryName(item);
+    if (!groups.has(catName)) groups.set(catName, []);
+    groups.get(catName).push(item);
   }
-  enableDrag();
+
+  const allCategories = new Set(BASE_CATEGORIES.filter(v => v));
+  for (const key of extraCategories) allCategories.add(key);
+  for (const key of groups.keys()) allCategories.add(key);
+  for (const key of getSavedCategories()) allCategories.add(key);
+
+  for (const catName of allCategories) {
+    const items = groups.get(catName) || [];
+    const section = document.createElement('section');
+    section.className = 'section';
+    if (!items.length) section.classList.add('empty');
+    section.innerHTML = `<h2 class="section-title">${escapeHtml(catName)}</h2>`;
+
+    const sectionGrid = document.createElement('div');
+    sectionGrid.className = 'section-grid';
+    sectionGrid.dataset.category = catName;
+    const ordered = applySavedOrder(items, `link-order:${catName}`);
+
+    for (const item of ordered) {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.setAttribute('draggable', 'false');
+      a.draggable = false;
+      a.href = item.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.dataset.id = item.id || item.url;
+
+      const faviconUrl = getFaviconUrl(item.url);
+      a.innerHTML = `
+        <div class="card-head">
+          <img class="favicon" src="${escapeHtml(faviconUrl)}" alt="">
+          <div class="name">${escapeHtml(item.name)}</div>
+          <span class="drag-handle" title="拖拽排序">||</span>
+        </div>
+        <p class="desc">${escapeHtml(item.desc || item.url)}</p>
+      `;
+      sectionGrid.appendChild(a);
+    }
+
+    section.appendChild(sectionGrid);
+    grid.appendChild(section);
+    enableDrag(sectionGrid);
+  }
 }
 
 
@@ -94,65 +170,133 @@ function render(list) {
 
     async function init() {
       const res = await fetch('./links.json', { cache: 'no-store' });
-      links = applySavedOrder(await res.json());
+      links = await res.json();
+      applySavedCategories(links);
+      extraCategories = await loadExtraCategories();
+      updateCategorySelect();
       render(links);
 
 
-      q.addEventListener('input', () => {
+      const applyFilters = () => {
         const kw = q.value.trim().toLowerCase();
-        if (!kw) return render(links);
-        render(links.filter(x =>
-          (x.name||'').toLowerCase().includes(kw) ||
-          (x.desc||'').toLowerCase().includes(kw) ||
-          (x.url||'').toLowerCase().includes(kw)
-        ));
-      });
+        const c = cat.value.trim();
+        render(links.filter(x => {
+          const catName = getCategoryName(x);
+          const hitKw = !kw || (x.name||'').toLowerCase().includes(kw) ||
+            (x.desc||'').toLowerCase().includes(kw) ||
+            (x.url||'').toLowerCase().includes(kw) ||
+            catName.toLowerCase().includes(kw);
+          const hitCat = !c || catName === c;
+          return hitKw && hitCat;
+        }));
+      };
+      q.addEventListener('input', applyFilters);
+      cat.addEventListener('change', applyFilters);
     }
     init();
-    
-let dragSrcEl = null; //增加了功能-排列图标
 
-function enableDrag() {
-  const cards = document.querySelectorAll('.card');
+grid.addEventListener('click', e => {
+  if (suppressClick) {
+    e.preventDefault();
+    e.stopPropagation();
+    suppressClick = false;
+  }
+}, true);
+
+let dragSrcEl = null; //增加了功能-排列图标
+let dragSrcContainer = null;
+let dragActive = false;
+let dragMoved = false;
+let dragStartX = 0;
+let dragStartY = 0;
+let suppressClick = false;
+
+function enableDrag(container) {
+  const handles = container.querySelectorAll('.drag-handle');
+  const cards = container.querySelectorAll('.card');
+  const section = container.closest('.section');
+
+  handles.forEach(handle => {
+    if (handle.dataset.dragBound) return;
+    handle.dataset.dragBound = '1';
+    handle.addEventListener('mousedown', e => {
+      const card = handle.closest('.card');
+      if (!card) return;
+      e.preventDefault();
+      startDrag(card, e);
+    });
+  });
 
   cards.forEach(card => {
-    card.draggable = true;
-
-    card.addEventListener('dragstart', e => {
-      dragSrcEl = card;
-      card.style.opacity = '0.4';
-      e.dataTransfer.effectAllowed = 'move';
-    });
-
-    card.addEventListener('dragend', () => {
-      card.style.opacity = '';
-      saveOrder();
-    });
-
-    card.addEventListener('dragover', e => {
-      e.preventDefault();
-      return false;
-    });
-
-    card.addEventListener('drop', e => {
-      e.stopPropagation();
-      if (dragSrcEl !== card) {
-        const srcNext = dragSrcEl.nextSibling === card ? dragSrcEl : dragSrcEl.nextSibling;
-        grid.insertBefore(dragSrcEl, card);
-        grid.insertBefore(card, srcNext);
-      }
-      return false;
-    });
+    if (card.dataset.dropBound) return;
+    card.dataset.dropBound = '1';
   });
 }
 
-function saveOrder() {
-  const ids = [...document.querySelectorAll('.card')].map(c => c.dataset.id);
-  localStorage.setItem('link-order', JSON.stringify(ids));
+function startDrag(card, e) {
+  dragSrcEl = card;
+  dragSrcContainer = card.closest('.section-grid');
+  dragActive = true;
+  dragMoved = false;
+  dragStartX = e.clientX;
+  dragStartY = e.clientY;
+  card.classList.add('is-dragging');
+  document.body.classList.add('dragging');
+
+  document.addEventListener('mousemove', onDragMove);
+  document.addEventListener('mouseup', onDragEnd, { once: true });
 }
 
-function applySavedOrder(list) {
-  const saved = JSON.parse(localStorage.getItem('link-order') || '[]');
+function onDragMove(e) {
+  if (!dragActive || !dragSrcEl) return;
+  const dx = Math.abs(e.clientX - dragStartX);
+  const dy = Math.abs(e.clientY - dragStartY);
+  if (!dragMoved && (dx > 3 || dy > 3)) dragMoved = true;
+  if (!dragMoved) return;
+
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (!el) return;
+  const overCard = el.closest('.card');
+  const overContainer = el.closest('.section-grid');
+
+  if (overCard && overCard !== dragSrcEl) {
+    const rect = overCard.getBoundingClientRect();
+    const before = e.clientY < rect.top + rect.height / 2;
+    const targetContainer = overCard.closest('.section-grid');
+    if (before) {
+      targetContainer.insertBefore(dragSrcEl, overCard);
+    } else {
+      targetContainer.insertBefore(dragSrcEl, overCard.nextSibling);
+    }
+  } else if (overContainer && overContainer !== dragSrcEl.closest('.section-grid')) {
+    overContainer.appendChild(dragSrcEl);
+  }
+}
+
+function onDragEnd() {
+  document.removeEventListener('mousemove', onDragMove);
+  if (dragSrcEl) dragSrcEl.classList.remove('is-dragging');
+  document.body.classList.remove('dragging');
+
+  const finalContainer = dragSrcEl ? dragSrcEl.closest('.section-grid') : null;
+  if (finalContainer) {
+    handleMove(finalContainer);
+  }
+
+  suppressClick = dragMoved;
+  dragActive = false;
+  dragSrcEl = null;
+  dragSrcContainer = null;
+}
+
+function saveOrder(container) {
+  const ids = [...container.querySelectorAll('.card')].map(c => c.dataset.id);
+  const storageKey = `link-order:${container.dataset.category}`;
+  localStorage.setItem(storageKey, JSON.stringify(ids));
+}
+
+function applySavedOrder(list, storageKey) {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
   if (!saved.length) return list;
 
   const map = new Map(list.map(i => [(i.id || i.url), i]));
@@ -168,8 +312,100 @@ function applySavedOrder(list) {
   return ordered.concat([...map.values()]);
 }
 
+function applySavedCategories(list) {
+  for (const item of list) {
+    const id = item.id || item.url;
+    const saved = localStorage.getItem(`link-cat:${id}`);
+    if (saved) item.category = saved;
+  }
+}
+
+function getSavedCategories() {
+  const set = new Set();
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith('link-cat:')) {
+      const val = localStorage.getItem(key);
+      if (val) set.add(val);
+    }
+  }
+  return set;
+}
+
+function updateCategorySelect() {
+  const current = cat.value;
+  cat.innerHTML = '';
+  BASE_OPTIONS.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.value;
+    o.textContent = opt.label;
+    cat.appendChild(o);
+  });
+  const seen = new Set(BASE_CATEGORIES);
+  extraCategories.forEach(val => {
+    if (seen.has(val)) return;
+    const o = document.createElement('option');
+    o.value = val;
+    o.textContent = val;
+    cat.appendChild(o);
+    seen.add(val);
+  });
+  cat.value = seen.has(current) ? current : '';
+}
+
+async function loadExtraCategories() {
+  try {
+    const res = await fetch('./categories.json', { cache: 'no-store' });
+    const list = await res.json();
+    return Array.isArray(list) ? list.filter(v => typeof v === 'string' && v.trim()) : [];
+  } catch {
+    return loadExtraCategoriesViaIframe();
+  }
+}
+
+async function loadExtraCategoriesViaIframe() {
+  try {
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = './categories.json';
+    document.body.appendChild(iframe);
+    await new Promise((resolve, reject) => {
+      iframe.onload = resolve;
+      iframe.onerror = reject;
+      setTimeout(() => reject(new Error('timeout')), 2000);
+    });
+    const text = iframe.contentDocument && iframe.contentDocument.body
+      ? iframe.contentDocument.body.textContent
+      : '';
+    iframe.remove();
+    const list = JSON.parse(text || '[]');
+    return Array.isArray(list) ? list.filter(v => typeof v === 'string' && v.trim()) : [];
+  } catch {
+    return [];
+  }
+}
+
+function handleMove(targetContainer) {
+  if (!dragSrcEl || !targetContainer) return;
+  const id = dragSrcEl.dataset.id;
+  const targetCat = targetContainer.dataset.category;
+  const item = links.find(x => (x.id || x.url) === id);
+  if (item) {
+    item.category = targetCat;
+    localStorage.setItem(`link-cat:${id}`, targetCat);
+  }
+  const targetSection = targetContainer.closest('.section');
+  if (targetSection) targetSection.classList.remove('empty');
+  if (dragSrcContainer && dragSrcContainer !== targetContainer) {
+    saveOrder(dragSrcContainer);
+    const srcSection = dragSrcContainer.closest('.section');
+    if (srcSection && dragSrcContainer.querySelectorAll('.card').length === 0) {
+      srcSection.classList.add('empty');
+    }
+  }
+  saveOrder(targetContainer);
+}
+
   </script>
 </body>
 </html>
-
-

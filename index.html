@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>我的导航页</title>
+  <title>叫兽的秘密基地</title>
   <style>
     :root { --card-bg: rgba(255,255,255,.10); --card-bd: rgba(255,255,255,.18); }
     body {
@@ -22,7 +22,9 @@
       transition: transform .12s ease, background .12s ease;
     }
     a.card:hover { transform: translateY(-2px); background: rgba(255,255,255,.14); }
-    .name { font-weight: 700; font-size: 16px; margin: 0 0 6px; }
+    .card-head { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+    .favicon { width: 18px; height: 18px; border-radius: 4px; flex: 0 0 18px; }
+    .name { font-weight: 700; font-size: 16px; margin: 0; }
     .desc { font-size: 13px; opacity: .85; margin: 0; }
     .topbar { display:flex; gap:10px; align-items:center; margin: 18px 0 18px; }
     input {
@@ -36,15 +38,13 @@
 <body>
   <div class="overlay">
     <div class="wrap">
-      <h1>我的收藏夹导航</h1>
-      <p>点卡片在新标签页打开（你只要改 links.json 就能增删链接）</p>
+      <h1>叫兽的秘密基地</h1>
 
       <div class="topbar">
         <input id="q" placeholder="搜索（按名称/描述）…" />
       </div>
 
       <div id="grid" class="grid"></div>
-      <div class="footer">提示：把背景图文件命名为 bg.jpg 放在同目录即可。</div>
     </div>
   </div>
 
@@ -63,8 +63,12 @@ function render(list) {
     a.rel = 'noopener noreferrer';
     a.dataset.id = item.id || item.url;
 
+    const faviconUrl = getFaviconUrl(item.url);
     a.innerHTML = `
-      <div class="name">${escapeHtml(item.name)}</div>
+      <div class="card-head">
+        <img class="favicon" src="${escapeHtml(faviconUrl)}" alt="">
+        <div class="name">${escapeHtml(item.name)}</div>
+      </div>
       <p class="desc">${escapeHtml(item.desc || item.url)}</p>
     `;
     grid.appendChild(a);
@@ -77,6 +81,15 @@ function render(list) {
 
     function escapeHtml(s) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    function getFaviconUrl(url) {
+      try {
+        const u = new URL(url);
+        return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(u.hostname)}&sz=64`;
+      } catch {
+        return 'https://www.google.com/s2/favicons?domain=example.com&sz=64';
+      }
     }
 
     async function init() {
@@ -158,6 +171,5 @@ function applySavedOrder(list) {
   </script>
 </body>
 </html>
-
 
 

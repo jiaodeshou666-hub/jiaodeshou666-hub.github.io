@@ -1,4 +1,12 @@
 [
-  "AI大模型",
-  "硬件性能速查"
+  { "name": "日常", "order": 10 },
+  { "name": "AI大模型", "order": 20 },
+  { "name": "工具", "order": 30 },
+  { "name": "娱乐", "order": 40 },
+  { "name": "学习", "order": 50 },
+  { "name": "硬件性能速查", "order": 60 },
+  { "name": "游戏", "order": 70 },
+  { "name": "观影", "order": 80 },
+  { "name": "飞机", "order": 90 },
+  { "name": "鉴赏", "order": 100 }
 ]

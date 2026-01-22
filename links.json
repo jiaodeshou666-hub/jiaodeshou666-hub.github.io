@@ -272,6 +272,31 @@
     "url": "https://rank.kkj.cn/Computer77.shtml",
     "desc": "快科技笔记本CPU天梯榜",
      "category": "硬件性能速查"
+  },
+    {
+    "name": "ChatGPT",
+    "url": "https://chat.openai.com/",
+    "desc": "chat.openai.com",
+    "category": "AI大模型"
+  },
+  {
+    "name": "Gemini",
+    "url": "https://gemini.google.com/",
+    "desc": "gemini.google.com",
+    "category": "AI大模型"
+  },
+  {
+    "name": "Grok",
+    "url": "https://grok.x.ai/",
+    "desc": "grok.x.ai",
+    "category": "AI大模型"
+  },
+  {
+    "name": "Claude",
+    "url": "https://claude.ai/",
+    "desc": "claude.ai",
+    "category": "AI大模型"
   }
 ]
+
 

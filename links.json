@@ -2,7 +2,7 @@
   {"name":"Google", "url":"https://www.google.com", "desc":"搜索", "category":"工具"},
   {"name":"YouTube", "url":"https://www.youtube.com", "desc":"视频", "category":"娱乐"},
   {"name":"GitHub", "url":"https://github.com", "desc":"代码托管", "category":"学习"},
-  {"name":"咸鱼单机", "url":"https://www.game7.vip/", "desc":"发布页防迷路", "category":"娱乐"},
+  {"name":"咸鱼单机", "url":"https://www.game7.vip/", "desc":"发布页防迷路", "category":"游戏"},
 
   {
     "name": "桌面显卡性能天梯图",
@@ -274,3 +274,4 @@
      "category": "硬件性能速查"
   }
 ]
+

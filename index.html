@@ -963,6 +963,7 @@ function updateCategorySelect() {
   });
   const seen = new Set(BASE_CATEGORIES);
   extraCategories.forEach(val => {
+    if (!privateMode && val === PRIVATE_CATEGORY) return;
     if (seen.has(val)) return;
     const o = document.createElement('option');
     o.value = val;
@@ -1171,6 +1172,7 @@ function handleMove(targetContainer) {
   </script>
 </body>
 </html>
+
 
 
 

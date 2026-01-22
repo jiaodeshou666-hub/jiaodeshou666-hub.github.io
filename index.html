@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>挂壁汇聚所</title>
+  <title>叫兽的秘密基地</title>
   <style>
     :root { --card-bg: rgba(255,255,255,.10); --card-bd: rgba(255,255,255,.18); }
     body {
@@ -77,6 +77,7 @@
       padding: 8px 10px; border-radius: 8px; cursor: pointer;
     }
     .suggest-item:hover { background: rgba(255,255,255,.12); }
+    .suggest-item.active { background: rgba(255,255,255,.2); }
     .engine-picker { position: relative; }
     .engine-btn {
       min-width: 86px; padding: 12px 10px; border-radius: 12px;
@@ -200,7 +201,7 @@
 <body>
   <div class="overlay">
     <div class="wrap">
-      <h1>挂壁汇聚所</h1>
+      <h1>叫兽的秘密基地</h1>
 
       <div class="topbar">
         <div id="enginePicker" class="engine-picker">
@@ -329,6 +330,7 @@
     let engine = loadEngine() || 'google';
     let suggestTimer = null;
     let suggestReqId = 0;
+    let suggestIndex = -1;
     let pendingBgData = '';
     let extraLinks = [];
     const PRIVATE_CATEGORY = '鉴赏';
@@ -535,6 +537,7 @@ function renderBackgroundHistory(list) {
 function hideSuggest() {
   suggestList.classList.remove('show');
   suggestList.innerHTML = '';
+  suggestIndex = -1;
 }
 
 function renderSuggest(items) {
@@ -542,7 +545,10 @@ function renderSuggest(items) {
     hideSuggest();
     return;
   }
-  suggestList.innerHTML = items.map(s => `<li class="suggest-item">${escapeHtml(s)}</li>`).join('');
+  suggestIndex = Math.min(suggestIndex, items.length - 1);
+  suggestList.innerHTML = items.map((s, i) =>
+    `<li class="suggest-item${i === suggestIndex ? ' active' : ''}" data-idx="${i}">${escapeHtml(s)}</li>`
+  ).join('');
   suggestList.classList.add('show');
 }
 
@@ -644,12 +650,30 @@ function jsonp(url, cbParam) {
           hideSuggest();
           return;
         }
+        suggestIndex = -1;
         clearTimeout(suggestTimer);
         suggestTimer = setTimeout(() => {
           requestSuggest(query);
         }, 150);
       });
       q.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          const items = [...suggestList.querySelectorAll('.suggest-item')];
+          if (!items.length) return;
+          e.preventDefault();
+          if (e.key === 'ArrowDown') {
+            suggestIndex = (suggestIndex + 1) % items.length;
+          } else {
+            suggestIndex = (suggestIndex - 1 + items.length) % items.length;
+          }
+          items.forEach((el, i) => el.classList.toggle('active', i === suggestIndex));
+          const active = items[suggestIndex];
+          if (active) {
+            const text = active.textContent.trim();
+            if (text) q.value = text;
+          }
+          return;
+        }
         if (e.key !== 'Enter') return;
         const query = q.value.trim();
         if (!query) return;
@@ -1172,9 +1196,6 @@ function handleMove(targetContainer) {
   </script>
 </body>
 </html>
-
-
-
 
 
 

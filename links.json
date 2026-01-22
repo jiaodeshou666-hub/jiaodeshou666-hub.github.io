@@ -7,25 +7,270 @@
   {
     "name": "桌面显卡性能天梯图",
     "url": "http://www.mydrivers.com/zhuanti/tianti/gpu/",
-    "desc": "台式机显卡性能排行"
+    "desc": "台式机显卡性能排行",
+    "category": "硬件性能速查"
   },
 
   {
     "name": "桌面CPU性能天梯图",
     "url": "http://www.mydrivers.com/zhuanti/tianti/cpu/",
-    "desc": "台式机CPU性能排行"
+    "desc": "台式机CPU性能排行",
+    "category": "硬件性能速查"
   },
 
   {
     "name": "笔记本显卡性能天梯图",
     "url": "https://www.mydrivers.com/zhuanti/tianti/gpum/index.html",
-    "desc": "笔记本显卡性能排行"
+    "desc": "笔记本显卡性能排行",
+    "category": "硬件性能速查"
+  },
+
+  
+  {
+    "name": "游侠网",
+    "url": "http://www.ali213.net/",
+    "desc": "www.ali213.net",
+    "category": "游戏"
+  },
+  {
+    "name": "SteamPY",
+    "url": "https://steampy.com/",
+    "desc": "steampy.com",
+        "category": "游戏"
+  },
+  {
+    "name": "3DMGAME",
+    "url": "https://bbs.3dmgame.com/forum.php",
+    "desc": "bbs.3dmgame.com",
+        "category": "游戏"
+  },
+
+  
+  {
+    "name": "电影天堂",
+    "url": "https://www.dytt89.com/index.html",
+    "desc": "www.dytt89.com",
+    "category": "观影"
+  },
+  {
+    "name": "LIBVIO",
+    "url": "https://www.libvio.vip/",
+    "desc": "www.libvio.vip",
+        "category": "观影"
+  },
+  {
+    "name": "观影 GYING",
+    "url": "https://www.gying.org/",
+    "desc": "www.gying.org",
+        "category": "观影"
+  },
+  {
+    "name": "LIBVIO",
+    "url": "https://www.libvio.cc/",
+    "desc": "www.libvio.cc",
+        "category": "观影"
+  },
+
+  
+  {
+    "name": "腾讯元宝",
+    "url": "https://yuanbao.tencent.com/chat",
+    "desc": "yuanbao.tencent.com",
+    "category": "AI大模型"
+  },
+
+  
+  {
+    "name": "PEF转word",
+    "url": "https://www.cleverpdf.com/cn",
+    "desc": "www.cleverpdf.com",
+        "category": "工具"
+  },
+  {
+    "name": "30tool工具网",
+    "url": "https://www.30aitool.com/",
+    "desc": "www.30aitool.com",
+            "category": "工具"
+  },
+  {
+    "name": "万能维修大全",
+    "url": "https://zh.ifixit.com/",
+    "desc": "zh.ifixit.com",
+            "category": "工具"
+  },
+  {
+    "name": "磁力链接搜索引擎",
+    "url": "https://bt1207eo.xyz/",
+    "desc": "bt1207eo.xyz",
+            "category": "工具"
+  },
+
+  
+  {
+    "name": "在线图片免费压缩工具",
+    "url": "https://tiomg.org/compress-image-pro",
+    "desc": "tiomg.org",
+            "category": "工具"
+  },
+  {
+    "name": "TXT转EPUB",
+    "url": "https://www.aconvert.com/cn/ebook/txt-to-epub/",
+    "desc": "www.aconvert.com",
+            "category": "工具"
+  },
+
+
+  
+  {
+    "name": "DeepSeek",
+    "url": "https://chat.deepseek.com/",
+    "desc": "chat.deepseek.com",
+    "category": "AI大模型"
+  },
+  {
+    "name": "Google AI Studio",
+    "url": "https://aistudio.google.com/prompts/1-w_wEVFqQbRgalibuFndWxHmmSAeiG1A",
+    "desc": "aistudio.google.com",
+        "category": "AI大模型"
+  },
+  {
+    "name": "食用手册",
+    "url": "https://cook.yunyoujun.cn/?continueFlag=4892de72dccce80188d1048025a8a114",
+    "desc": "cook.yunyoujun.cn",
+    "category": "工具"
+  },
+  {
+    "name": "通义千问",
+    "url": "https://www.qianwen.com/",
+    "desc": "www.qianwen.com",
+        "category": "AI大模型"
+  },
+  {
+    "name": "NotebookLM",
+    "url": "https://notebooklm.google.com/",
+    "desc": "notebooklm.google.com",
+        "category": "AI大模型"
+  },
+  {
+    "name": "免费手机号码",
+    "url": "https://zh.receive-sms.cc/Slovenia-Phone-Number/38665714737",
+    "desc": "zh.receive-sms.cc",
+        "category": "工具"
+  },
+  {
+    "name": "ChatGPT Team 邀请",
+    "url": "https://tentvx.xx.kg/",
+    "desc": "tentvx.xx.kg",
+        "category": "AI大模型"
+  },
+  {
+    "name": "Agent Skills 市场",
+    "url": "https://skillsmp.com/zh",
+    "desc": "skillsmp.com",
+        "category": "AI大模型"
+  },
+
+
+
+  
+  {
+    "name": "飞鸟云官网地址发布页",
+    "url": "https://fny114.pages.dev/",
+    "desc": "fny114.pages.dev",
+           "category": "飞机"
+  },
+  {
+    "name": "疾风云地址发布页",
+    "url": "https://homes.jif9.net/",
+    "desc": "homes.jif9.net",
+    "category": "飞机"
+    
+    
+  },
+
+
+    {
+    "name": "哔哩哔哩",
+    "url": "https://www.bilibili.com/",
+    "desc": "www.bilibili.com",
+               "category": "日常"
+  },
+
+    {
+    "name": "有道",
+    "url": "https://fanyi.youdao.com/",
+    "desc": "fanyi.youdao.com",
+                   "category": "日常"
   },
   
+  
+  {
+    "name": "鉴赏1",
+    "url": "https://moxing.lol/?is_agree=1",
+    "desc": "moxing.lol",
+                   "category": "鉴赏"
+  },
+  {
+    "name": "鉴赏2",
+    "url": "https://www.seejav.life/forum/forum.php?mod=viewthread&tid=124280&extra=page%3D7",
+    "desc": "www.seejav.life",
+     "category": "鉴赏"
+  },
+
+  
+  {
+    "name": "JavBus",
+    "url": "https://www.javbus.com/forum/forum.php?mod=viewthread&tid=148456",
+    "desc": "www.javbus.com",
+     "category": "鉴赏"
+  },
+  {
+    "name": "鉴赏3",
+    "url": "https://www.ero-labs.com/cn/forum_access.html?forum_id=1",
+    "desc": "www.ero-labs.com",
+     "category": "鉴赏"
+  },
+  {
+    "name": "鉴赏4",
+    "url": "https://hsex.icu/top_list-1.htm",
+    "desc": "hsex.icu",
+     "category": "鉴赏"
+  },
+
+
+  
+  {
+    "name": "鉴赏5",
+    "url": "https://ths8f9.jiuse9927.xyz/",
+    "desc": "ths8f9.jiuse9927.xyz",
+     "category": "鉴赏"
+  },
+  {
+    "name": "鉴赏6",
+    "url": "https://www.hm08.lol/photos-index-aid-240889.html",
+    "desc": "www.hm08.lol",
+     "category": "鉴赏"
+  },
+  {
+    "name": "鉴赏7",
+    "url": "https://www.vw3b.com/web/index.html",
+    "desc": "www.vw3b.com",
+     "category": "鉴赏"
+  },
+
+  
+  {
+    "name": "鉴赏8",
+    "url": "https://d3gbed2ley04jq.onnagxn.xyz/category/xazd/",
+    "desc": "d3gbed2ley04jq.onnagxn.xyz",
+     "category": "鉴赏"
+  },
+
+
   {
     "name": "笔记本CPU排行榜",
     "url": "https://rank.kkj.cn/Computer77.shtml",
-    "desc": "快科技笔记本CPU天梯榜"
+    "desc": "快科技笔记本CPU天梯榜",
+     "category": "硬件性能速查"
   }
 ]
-

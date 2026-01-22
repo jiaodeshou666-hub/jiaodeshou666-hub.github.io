@@ -210,15 +210,15 @@
           </button>
           <ul id="engineMenu" class="engine-menu">
             <li class="engine-item" data-key="google" data-label="Google">
-              <img class="engine-icon" src="https://icon.bqb1024.com/?url=google.com" alt="">
+              <img class="engine-icon" src="https://www.google.com/favicon.ico" alt="">
               <span>Google</span>
             </li>
             <li class="engine-item" data-key="bing" data-label="Bing">
-              <img class="engine-icon" src="https://icon.bqb1024.com/?url=bing.com" alt="">
+              <img class="engine-icon" src="https://www.bing.com/favicon.ico" alt="">
               <span>Bing</span>
             </li>
             <li class="engine-item" data-key="baidu" data-label="百度">
-              <img class="engine-icon" src="https://icon.bqb1024.com/?url=baidu.com" alt="">
+              <img class="engine-icon" src="https://www.baidu.com/favicon.ico" alt="">
               <span>百度</span>
             </li>
           </ul>
@@ -443,9 +443,9 @@ function render(list) {
 function getFaviconUrl(url) {
   try {
     const u = new URL(url);
-    return `https://icon.bqb1024.com/?url=${encodeURIComponent(u.hostname)}`;
+    return `${u.origin}/favicon.ico`;
   } catch {
-    return 'https://icon.bqb1024.com/?url=example.com';
+    return 'https://example.com/favicon.ico';
   }
 }
 

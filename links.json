@@ -296,7 +296,24 @@
     "url": "https://claude.ai/",
     "desc": "claude.ai",
     "category": "AI大模型"
+  },
+
+ {
+    "name": "酒馆图鉴",
+    "url": "https://battlegrounds.gamerhub.cn/cards/",
+    "desc": "战旗图鉴速查",
+    "category": "游戏"
+  },
+  
+   {
+    "name": "抖音",
+    "url": "https://www.douyin.com/",
+    "desc": "速度刷一刷",
+    "category": "日常"
   }
+
+  
 ]
+
 
 

@@ -10,7 +10,7 @@
       margin: 0; min-height: 100vh; color: #fff; font-family: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
       background: url("./bg.jpg") center/cover no-repeat fixed;
     }
-    .overlay { min-height: 100vh; background: rgba(0,0,0,.45); backdrop-filter: blur(2px); }
+    .overlay { min-height: 100vh; background: rgba(0,0,0,.45); backdrop-filter: blur(0px); }
     .wrap { max-width: 960px; margin: 0 auto; padding: 40px 16px 64px; }
     h1 { font-size: 28px; margin: 0 0 8px; }
     p { margin: 0 0 18px; opacity: .9; }
@@ -38,6 +38,14 @@
     .name { font-weight: 700; font-size: 16px; margin: 0; }
     .desc { font-size: 13px; opacity: .85; margin: 0; }
     .card.is-dragging { opacity: .6; }
+    .card-actions { margin-left: auto; display: inline-flex; gap: 6px; align-items: center; }
+    .delete-btn {
+      display: none; width: 22px; height: 22px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12); color: #fff;
+      font-size: 14px; line-height: 1; cursor: pointer;
+    }
+    .manage .delete-btn { display: inline-flex; align-items: center; justify-content: center; }
     .drag-handle {
       margin-left: auto;
       width: 22px; height: 22px;
@@ -49,19 +57,144 @@
       user-select: none;
     }
     .drag-handle:active { cursor: grabbing; }
-    .topbar { display:flex; gap:10px; align-items:center; margin: 18px 0 18px; }
+    .topbar { display:flex; gap:10px; align-items:center; margin: 18px 0 18px; flex-wrap: nowrap; }
     input {
       width: 100%; padding: 12px 12px; border-radius: 12px;
       border: 1px solid rgba(255,255,255,.25); outline: none;
       background: rgba(0,0,0,.25); color: #fff;
     }
+    .search-wrap { position: relative; flex: 0 1 680px; min-width: 0; }
+    .search-input { width: 100%; }
+    .suggest {
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      list-style: none; margin: 0; padding: 6px;
+      border-radius: 12px; border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      display: none; z-index: 30;
+    }
+    .suggest.show { display: block; }
+    .suggest-item {
+      padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    }
+    .suggest-item:hover { background: rgba(255,255,255,.12); }
+    .engine-picker { position: relative; }
+    .engine-btn {
+      min-width: 86px; padding: 12px 10px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25); outline: none;
+      background: rgba(0,0,0,.25); color: #fff;
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer;
+    }
+    .engine-icon { width: 16px; height: 16px; border-radius: 3px; }
+    .engine-menu {
+      position: absolute; top: calc(100% + 6px); left: 0;
+      min-width: 140px; padding: 6px; margin: 0;
+      list-style: none; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      display: none; z-index: 20;
+    }
+    .engine-picker.open .engine-menu { display: block; }
+    .engine-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 8px; border-radius: 8px; cursor: pointer;
+    }
+    .engine-item:hover { background: rgba(255,255,255,.12); }
     select {
-      padding: 12px 10px; border-radius: 12px;
+      padding: 12px 10px; border-radius: 12px; flex: 0 0 120px; margin-left: auto;
       border: 1px solid rgba(255,255,255,.25); outline: none;
       background: rgba(0,0,0,.25); color: #fff;
     }
     option { color: #000; }
     .footer { opacity: .75; margin-top: 18px; font-size: 12px; }
+    .settings {
+      position: fixed; top: 16px; right: 16px; z-index: 40;
+    }
+    .settings-btn {
+      width: 44px; height: 44px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.35); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 20px;
+    }
+    .settings-panel {
+      position: fixed; top: 70px; right: 16px; width: 240px;
+      border-radius: 16px; padding: 14px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      display: none; z-index: 40;
+    }
+    .settings-panel.open { display: block; }
+    .settings-title { font-size: 14px; margin: 0 0 10px; opacity: .9; }
+    .settings-menu { list-style: none; margin: 0; padding: 0; }
+    .settings-item {
+      padding: 10px 12px; border-radius: 10px; cursor: pointer;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    }
+    .settings-item:hover { background: rgba(255,255,255,.14); }
+    .modal {
+      position: fixed; inset: 0; display: none; z-index: 50;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(2px);
+      align-items: center; justify-content: center;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: 420px; max-width: calc(100% - 32px);
+      border-radius: 16px; padding: 16px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.75);
+    }
+    .modal-title { font-size: 14px; margin: 0 0 12px; }
+    .field { margin-bottom: 12px; }
+    .field-label { font-size: 12px; margin: 0 0 6px; opacity: .85; }
+    .field-input {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.25); outline: none;
+      background: rgba(0,0,0,.25); color: #fff;
+    }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .sort-list { list-style: none; margin: 0 0 12px; padding: 0; }
+    .sort-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 10px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      margin-bottom: 8px;
+    }
+    .sort-actions { display: inline-flex; gap: 6px; }
+    .sort-btn {
+      width: 26px; height: 26px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12); color: #fff;
+      cursor: pointer; font-size: 12px;
+    }
+    .bg-panel {
+      position: fixed; top: 70px; right: 16px; width: 320px;
+      border-radius: 16px; padding: 14px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+      display: none; z-index: 40;
+    }
+    .bg-panel.open { display: block; }
+    .back-btn {
+      padding: 4px 8px; border-radius: 8px; cursor: pointer;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12); color: #fff;
+      font-size: 12px; line-height: 1.2;
+    }
+    .bg-history {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+      margin-bottom: 10px; min-width: 260px;
+    }
+    .bg-thumb {
+      width: 100%; aspect-ratio: 1/1; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.08); overflow: hidden;
+      cursor: pointer;
+    }
+    .bg-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .bg-actions { display: flex; gap: 8px; }
+    .file-input { display: none; }
   </style>
 </head>
 <body>
@@ -70,8 +203,31 @@
       <h1>叫兽的秘密基地</h1>
 
       <div class="topbar">
-        <input id="q" placeholder="搜索（按名称/描述）…" />
-        <select id="cat">
+        <div id="enginePicker" class="engine-picker">
+          <button id="engineBtn" class="engine-btn" type="button">
+            <img class="engine-icon" id="engineIcon" alt="" />
+            <span id="engineLabel">Google</span>
+          </button>
+          <ul id="engineMenu" class="engine-menu">
+            <li class="engine-item" data-key="google" data-label="Google">
+              <img class="engine-icon" src="https://icon.bqb1024.com/?url=google.com" alt="">
+              <span>Google</span>
+            </li>
+            <li class="engine-item" data-key="bing" data-label="Bing">
+              <img class="engine-icon" src="https://icon.bqb1024.com/?url=bing.com" alt="">
+              <span>Bing</span>
+            </li>
+            <li class="engine-item" data-key="baidu" data-label="百度">
+              <img class="engine-icon" src="https://icon.bqb1024.com/?url=baidu.com" alt="">
+              <span>百度</span>
+            </li>
+          </ul>
+        </div>
+                <div id="searchWrap" class="search-wrap">
+          <input id="q" class="search-input" placeholder="搜索（按名称/描述）…" />
+          <ul id="suggestList" class="suggest"></ul>
+        </div>
+                <select id="cat">
           <option value="">全部</option>
           <option value="学习">学习</option>
           <option value="娱乐">娱乐</option>
@@ -84,10 +240,104 @@
     </div>
   </div>
 
+  <div class="settings">
+    <button id="settingsBtn" class="settings-btn" type="button" title="设置">⚙️</button>
+  </div>
+  <div id="settingsPanel" class="settings-panel">
+    <div class="settings-title">设置</div>
+    <ul class="settings-menu">
+      <li id="bgOption" class="settings-item">背景图片</li>
+      <li id="addLinkOption" class="settings-item">增加网址</li>
+      <li id="privateOption" class="settings-item">私密模式：关闭</li>
+      <li id="manageOption" class="settings-item">管理模式：关闭</li>
+      <li id="sortOption" class="settings-item">分类排序</li>
+    </ul>
+  </div>
+
+      <div id="bgPanel" class="bg-panel">
+    <div class="settings-title">
+      更换背景图
+      <button id="backToSettings" class="back-btn" type="button">返回设置</button>
+    </div>
+    <div id="bgHistory" class="bg-history"></div>
+    <div class="bg-actions">
+      <button id="pickBg" type="button">选择新背景图</button>
+    </div>
+    <input id="bgFile" class="file-input" type="file" accept="image/*">
+  </div>
+
+  <div id="addLinkModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-title">增加网址</div>
+      <div class="field">
+        <div class="field-label">请输入网址名</div>
+        <input id="newLinkName" class="field-input" placeholder="例如：知乎">
+      </div>
+      <div class="field">
+        <div class="field-label">请输入地址</div>
+        <input id="newLinkUrl" class="field-input" placeholder="例如：https://www.zhihu.com">
+      </div>
+      <div class="modal-actions">
+        <button id="saveAddLink" type="button">保存</button>
+        <button id="closeAddLink" type="button">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="sortModal" class="modal">
+    <div class="modal-card">
+      <div class="modal-title">分类排序</div>
+      <ul id="sortList" class="sort-list"></ul>
+      <div class="modal-actions">
+        <button id="saveSort" type="button">保存</button>
+        <button id="closeSort" type="button">关闭</button>
+      </div>
+    </div>
+  </div>
   <script>
     const grid = document.getElementById('grid');
     const q = document.getElementById('q');
     const cat = document.getElementById('cat');
+    const enginePicker = document.getElementById('enginePicker');
+    const engineBtn = document.getElementById('engineBtn');
+    const engineLabel = document.getElementById('engineLabel');
+    const engineIcon = document.getElementById('engineIcon');
+    const engineMenu = document.getElementById('engineMenu');
+    const searchWrap = document.getElementById('searchWrap');
+    const suggestList = document.getElementById('suggestList');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const bgPanel = document.getElementById('bgPanel');
+    const bgOption = document.getElementById('bgOption');
+    const backToSettings = document.getElementById('backToSettings');
+    const addLinkOption = document.getElementById('addLinkOption');
+    const privateOption = document.getElementById('privateOption');
+    const manageOption = document.getElementById('manageOption');
+    const sortOption = document.getElementById('sortOption');
+    const addLinkModal = document.getElementById('addLinkModal');
+    const closeAddLink = document.getElementById('closeAddLink');
+    const saveAddLink = document.getElementById('saveAddLink');
+    const newLinkName = document.getElementById('newLinkName');
+    const newLinkUrl = document.getElementById('newLinkUrl');
+    const sortModal = document.getElementById('sortModal');
+    const sortList = document.getElementById('sortList');
+    const saveSort = document.getElementById('saveSort');
+    const closeSort = document.getElementById('closeSort');
+    const bgHistory = document.getElementById('bgHistory');
+    const pickBg = document.getElementById('pickBg');
+    const bgFile = document.getElementById('bgFile');
+    let engine = loadEngine() || 'google';
+    let suggestTimer = null;
+    let suggestReqId = 0;
+    let pendingBgData = '';
+    let extraLinks = [];
+    const PRIVATE_CATEGORY = '鉴赏';
+    let privateMode = loadPrivateMode();
+    let manageMode = loadManageMode();
+    let deletedIds = new Set(loadDeletedIds());
+    let bgHistoryCache = [];
+    let bgSaveWarned = false;
+    let categoryOrder = [];
     let links = [];
     const DEFAULT_CATEGORY = '未分类';
     const BASE_OPTIONS = Array.from(cat.options).map(o => ({ value: o.value, label: o.textContent }));
@@ -96,6 +346,29 @@
 
 function getCategoryName(item) {
   return (item.category || '').trim() || DEFAULT_CATEGORY;
+}
+
+function getAvailableCategories(groups) {
+  const set = new Set(BASE_CATEGORIES.filter(v => v));
+  extraCategories.forEach(v => set.add(v));
+  for (const key of groups.keys()) set.add(key);
+  for (const key of getSavedCategories()) set.add(key);
+  if (privateMode) set.add(PRIVATE_CATEGORY);
+  else set.delete(PRIVATE_CATEGORY);
+  return set;
+}
+
+function applyCategoryOrder(set) {
+  const ordered = [];
+  const remaining = new Set(set);
+  categoryOrder.forEach(name => {
+    if (remaining.has(name)) {
+      ordered.push(name);
+      remaining.delete(name);
+    }
+  });
+  for (const name of remaining) ordered.push(name);
+  return ordered;
 }
 
 function render(list) {
@@ -107,12 +380,10 @@ function render(list) {
     groups.get(catName).push(item);
   }
 
-  const allCategories = new Set(BASE_CATEGORIES.filter(v => v));
-  for (const key of extraCategories) allCategories.add(key);
-  for (const key of groups.keys()) allCategories.add(key);
-  for (const key of getSavedCategories()) allCategories.add(key);
+  const allCategories = getAvailableCategories(groups);
+  const orderedCategories = applyCategoryOrder(allCategories);
 
-  for (const catName of allCategories) {
+  for (const catName of orderedCategories) {
     const items = groups.get(catName) || [];
     const section = document.createElement('section');
     section.className = 'section';
@@ -139,10 +410,20 @@ function render(list) {
         <div class="card-head">
           <img class="favicon" src="${escapeHtml(faviconUrl)}" alt="">
           <div class="name">${escapeHtml(item.name)}</div>
-          <span class="drag-handle" title="拖拽排序">||</span>
+          <div class="card-actions">
+            <button class="delete-btn" type="button" title="删除">×</button>
+            <span class="drag-handle" title="拖拽排序">||</span>
+          </div>
         </div>
         <p class="desc">${escapeHtml(item.desc || item.url)}</p>
       `;
+      const delBtn = a.querySelector('.delete-btn');
+      delBtn.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!confirm('确定删除该卡片？')) return;
+        deleteLink(item);
+      });
       sectionGrid.appendChild(a);
     }
 
@@ -159,38 +440,223 @@ function render(list) {
       return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
 
-    function getFaviconUrl(url) {
-      try {
-        const u = new URL(url);
-        return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(u.hostname)}&sz=64`;
-      } catch {
-        return 'https://www.google.com/s2/favicons?domain=example.com&sz=64';
-      }
+function getFaviconUrl(url) {
+  try {
+    const u = new URL(url);
+    return `https://icon.bqb1024.com/?url=${encodeURIComponent(u.hostname)}`;
+  } catch {
+    return 'https://icon.bqb1024.com/?url=example.com';
+  }
+}
+
+function getSearchUrl(engineKey, query) {
+  const q = encodeURIComponent(query);
+  switch (engineKey) {
+    case 'baidu':
+      return `https://www.baidu.com/s?wd=${q}`;
+    case 'bing':
+      return `https://www.bing.com/search?q=${q}`;
+    default:
+      return `https://www.google.com/search?q=${q}`;
+  }
+}
+
+function initEnginePicker() {
+  const item = engineMenu.querySelector(`.engine-item[data-key="${engine}"]`) ||
+    engineMenu.querySelector('.engine-item');
+  if (item) {
+    engineLabel.textContent = item.dataset.label || item.textContent.trim();
+    const img = item.querySelector('img');
+    if (img) engineIcon.src = img.src;
+  }
+}
+
+function loadEngine() {
+  return localStorage.getItem('engine') || '';
+}
+
+function saveEngine(value) {
+  localStorage.setItem('engine', value);
+}
+
+function initBackground() {
+  const saved = getBackgrounds();
+  if (saved.length) {
+    applyBackground(saved[0]);
+  }
+  renderBackgroundHistory(saved);
+}
+
+function applyBackground(dataUrl) {
+  if (!dataUrl) return;
+  document.body.style.background = `url("${dataUrl}") center/cover no-repeat fixed`;
+}
+
+function getBackgrounds() {
+  try {
+    const raw = localStorage.getItem('bg-history');
+    const list = JSON.parse(raw || '[]');
+    const cleaned = Array.isArray(list) ? list.filter(v => typeof v === 'string' && v) : [];
+    bgHistoryCache = cleaned;
+    return cleaned;
+  } catch {
+    return bgHistoryCache;
+  }
+}
+
+function saveBackground(dataUrl) {
+  const list = getBackgrounds().filter(x => x !== dataUrl);
+  list.unshift(dataUrl);
+  const trimmed = list.slice(0, 5);
+  bgHistoryCache = trimmed;
+  try {
+    localStorage.setItem('bg-history', JSON.stringify(trimmed));
+  } catch {
+    bgSaveWarned = true;
+  }
+  renderBackgroundHistory(trimmed);
+}
+
+function renderBackgroundHistory(list) {
+  bgHistory.innerHTML = '';
+  list.forEach(item => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'bg-thumb';
+    btn.innerHTML = `<img src="${escapeHtml(item)}" alt="">`;
+    btn.addEventListener('click', () => {
+      pendingBgData = item;
+      applyBackground(item);
+    });
+    bgHistory.appendChild(btn);
+  });
+}
+
+function hideSuggest() {
+  suggestList.classList.remove('show');
+  suggestList.innerHTML = '';
+}
+
+function renderSuggest(items) {
+  if (!items.length) {
+    hideSuggest();
+    return;
+  }
+  suggestList.innerHTML = items.map(s => `<li class="suggest-item">${escapeHtml(s)}</li>`).join('');
+  suggestList.classList.add('show');
+}
+
+function requestSuggest(query) {
+  const currentId = ++suggestReqId;
+  fetchSuggest(engine, query).then(items => {
+    if (currentId !== suggestReqId) return;
+    renderSuggest(items);
+  }).catch(() => {
+    if (currentId !== suggestReqId) return;
+    hideSuggest();
+  });
+}
+
+function fetchSuggest(engineKey, query) {
+  const q = encodeURIComponent(query);
+  if (engineKey === 'baidu') {
+    return jsonp(`https://suggestion.baidu.com/su?wd=${q}`, 'cb').then(data =>
+      Array.isArray(data && data.s) ? data.s : []
+    );
+  }
+  if (engineKey === 'bing') {
+    return jsonp(`https://api.bing.com/osjson.aspx?query=${q}`, 'callback').then(data =>
+      Array.isArray(data && data[1]) ? data[1] : []
+    );
+  }
+  return jsonp(`https://suggestqueries.google.com/complete/search?client=firefox&q=${q}`, 'callback').then(data =>
+    Array.isArray(data && data[1]) ? data[1] : []
+  );
+}
+
+function jsonp(url, cbParam) {
+  return new Promise((resolve, reject) => {
+    const cbName = `__jsonp_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const script = document.createElement('script');
+    const sep = url.includes('?') ? '&' : '?';
+    script.src = `${url}${sep}${cbParam}=${cbName}`;
+    script.async = true;
+    let done = false;
+
+    window[cbName] = data => {
+      if (done) return;
+      done = true;
+      cleanup();
+      resolve(data);
+    };
+
+    function cleanup() {
+      delete window[cbName];
+      script.remove();
     }
+
+    script.onerror = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error('jsonp error'));
+    };
+
+    document.body.appendChild(script);
+    setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error('jsonp timeout'));
+    }, 3000);
+  });
+}
 
     async function init() {
       const res = await fetch('./links.json', { cache: 'no-store' });
       links = await res.json();
+      extraLinks = loadExtraLinks();
+      links = links.concat(extraLinks);
+      links = links.filter(x => !deletedIds.has((x.id || x.url)));
       applySavedCategories(links);
-      extraCategories = await loadExtraCategories();
+      const extraConfig = await loadExtraCategories();
+      extraCategories = extraConfig.categories;
+      categoryOrder = extraConfig.order.length ? extraConfig.order : loadCategoryOrder();
       updateCategorySelect();
+      initEnginePicker();
+      updatePrivateOptionLabel();
+      updateManageOptionLabel();
       render(links);
+      initBackground();
 
 
       const applyFilters = () => {
-        const kw = q.value.trim().toLowerCase();
         const c = cat.value.trim();
         render(links.filter(x => {
           const catName = getCategoryName(x);
-          const hitKw = !kw || (x.name||'').toLowerCase().includes(kw) ||
-            (x.desc||'').toLowerCase().includes(kw) ||
-            (x.url||'').toLowerCase().includes(kw) ||
-            catName.toLowerCase().includes(kw);
           const hitCat = !c || catName === c;
-          return hitKw && hitCat;
+          return hitCat;
         }));
       };
-      q.addEventListener('input', applyFilters);
+      q.addEventListener('input', () => {
+        const query = q.value.trim();
+        if (!query) {
+          hideSuggest();
+          return;
+        }
+        clearTimeout(suggestTimer);
+        suggestTimer = setTimeout(() => {
+          requestSuggest(query);
+        }, 150);
+      });
+      q.addEventListener('keydown', e => {
+        if (e.key !== 'Enter') return;
+        const query = q.value.trim();
+        if (!query) return;
+        const url = getSearchUrl(engine, query);
+        window.open(url, '_blank', 'noopener');
+        hideSuggest();
+      });
       cat.addEventListener('change', applyFilters);
     }
     init();
@@ -203,7 +669,161 @@ grid.addEventListener('click', e => {
   }
 }, true);
 
-let dragSrcEl = null; //增加了功能-排列图标
+engineBtn.addEventListener('click', () => {
+  enginePicker.classList.toggle('open');
+});
+
+engineMenu.addEventListener('click', e => {
+  const item = e.target.closest('.engine-item');
+  if (!item) return;
+  engine = item.dataset.key;
+  engineLabel.textContent = item.dataset.label || item.textContent.trim();
+  const img = item.querySelector('img');
+  if (img) engineIcon.src = img.src;
+  saveEngine(engine);
+  enginePicker.classList.remove('open');
+});
+
+document.addEventListener('click', e => {
+  if (!enginePicker.contains(e.target)) {
+    enginePicker.classList.remove('open');
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!searchWrap.contains(e.target)) {
+    hideSuggest();
+  }
+});
+
+settingsBtn.addEventListener('click', () => {
+  settingsPanel.classList.toggle('open');
+  bgPanel.classList.remove('open');
+});
+
+document.addEventListener('click', e => {
+  if (!settingsPanel.contains(e.target) && !settingsBtn.contains(e.target) && !bgPanel.contains(e.target)) {
+    settingsPanel.classList.remove('open');
+    bgPanel.classList.remove('open');
+  }
+});
+
+bgOption.addEventListener('click', () => {
+  settingsPanel.classList.remove('open');
+  bgPanel.classList.add('open');
+});
+
+backToSettings.addEventListener('click', () => {
+  bgPanel.classList.remove('open');
+  settingsPanel.classList.add('open');
+});
+
+addLinkOption.addEventListener('click', () => {
+  settingsPanel.classList.remove('open');
+  addLinkModal.classList.add('open');
+  newLinkName.value = '';
+  newLinkUrl.value = '';
+});
+
+closeAddLink.addEventListener('click', () => {
+  addLinkModal.classList.remove('open');
+});
+
+addLinkModal.addEventListener('click', e => {
+  if (e.target === addLinkModal) {
+    addLinkModal.classList.remove('open');
+  }
+});
+
+saveAddLink.addEventListener('click', () => {
+  const name = newLinkName.value.trim();
+  let url = newLinkUrl.value.trim();
+  if (!name || !url) return;
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`;
+  }
+  const item = {
+    id: `local-${Date.now()}`,
+    name,
+    url,
+    category: DEFAULT_CATEGORY
+  };
+  extraLinks.push(item);
+  links.push(item);
+  saveExtraLinks(extraLinks);
+  render(links);
+  addLinkModal.classList.remove('open');
+});
+
+sortOption.addEventListener('click', () => {
+  settingsPanel.classList.remove('open');
+  buildSortList();
+  sortModal.classList.add('open');
+});
+
+closeSort.addEventListener('click', () => {
+  sortModal.classList.remove('open');
+});
+
+sortModal.addEventListener('click', e => {
+  if (e.target === sortModal) {
+    sortModal.classList.remove('open');
+  }
+});
+
+saveSort.addEventListener('click', () => {
+  const items = [...sortList.querySelectorAll('.sort-item')].map(li => li.dataset.name);
+  categoryOrder = items;
+  saveCategoryOrder(categoryOrder);
+  sortModal.classList.remove('open');
+  updateCategorySelect();
+  render(links);
+});
+
+privateOption.addEventListener('click', () => {
+  privateMode = !privateMode;
+  savePrivateMode(privateMode);
+  updatePrivateOptionLabel();
+      updateManageOptionLabel();
+  updateCategorySelect();
+  render(links);
+      alert(privateMode ? '已打开私密模式' : '已关闭私密模式');
+});
+manageOption.addEventListener('click', () => {
+  manageMode = !manageMode;
+  saveManageMode(manageMode);
+  updateManageOptionLabel();
+});
+
+pickBg.addEventListener('click', () => {
+  bgFile.click();
+});
+
+bgFile.addEventListener('change', () => {
+  const file = bgFile.files && bgFile.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    const data = String(reader.result || '');
+    if (!data) return;
+    applyBackground(data);
+    saveBackground(data);
+  };
+  reader.readAsDataURL(file);
+});
+
+suggestList.addEventListener('click', e => {
+  const item = e.target.closest('.suggest-item');
+  if (!item) return;
+  const text = item.textContent.trim();
+  if (!text) return;
+  q.value = text;
+  const url = getSearchUrl(engine, text);
+  window.open(url, '_blank', 'noopener');
+  hideSuggest();
+});
+
+let dragSrcEl = null; //澧炲姞浜嗗姛鑳?鎺掑垪鍥炬爣
 let dragSrcContainer = null;
 let dragActive = false;
 let dragMoved = false;
@@ -350,6 +970,13 @@ function updateCategorySelect() {
     cat.appendChild(o);
     seen.add(val);
   });
+  if (privateMode && !seen.has(PRIVATE_CATEGORY)) {
+    const o = document.createElement('option');
+    o.value = PRIVATE_CATEGORY;
+    o.textContent = PRIVATE_CATEGORY;
+    cat.appendChild(o);
+    seen.add(PRIVATE_CATEGORY);
+  }
   cat.value = seen.has(current) ? current : '';
 }
 
@@ -357,7 +984,7 @@ async function loadExtraCategories() {
   try {
     const res = await fetch('./categories.json', { cache: 'no-store' });
     const list = await res.json();
-    return Array.isArray(list) ? list.filter(v => typeof v === 'string' && v.trim()) : [];
+    return normalizeCategoryConfig(list);
   } catch {
     return loadExtraCategoriesViaIframe();
   }
@@ -379,10 +1006,145 @@ async function loadExtraCategoriesViaIframe() {
       : '';
     iframe.remove();
     const list = JSON.parse(text || '[]');
+    return normalizeCategoryConfig(list);
+  } catch {
+    return { categories: [], order: [] };
+  }
+}
+
+function normalizeCategoryConfig(list) {
+  if (!Array.isArray(list)) return { categories: [], order: [] };
+  const categories = [];
+  const order = [];
+  list.forEach(item => {
+    if (typeof item === 'string' && item.trim()) {
+      categories.push(item.trim());
+    } else if (item && typeof item === 'object' && typeof item.name === 'string') {
+      const name = item.name.trim();
+      if (name) categories.push(name);
+      if (name && typeof item.order === 'number') {
+        order.push({ name, order: item.order });
+      }
+    }
+  });
+  order.sort((a, b) => a.order - b.order);
+  return { categories, order: order.map(x => x.name) };
+}
+
+function loadExtraLinks() {
+  try {
+    const raw = localStorage.getItem('extra-links');
+    const list = JSON.parse(raw || '[]');
+    return Array.isArray(list) ? list.filter(x => x && typeof x === 'object') : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveExtraLinks(list) {
+  localStorage.setItem('extra-links', JSON.stringify(list));
+}
+
+function loadCategoryOrder() {
+  try {
+    const raw = localStorage.getItem('category-order');
+    const list = JSON.parse(raw || '[]');
     return Array.isArray(list) ? list.filter(v => typeof v === 'string' && v.trim()) : [];
   } catch {
     return [];
   }
+}
+
+function saveCategoryOrder(list) {
+  localStorage.setItem('category-order', JSON.stringify(list));
+}
+
+function loadDeletedIds() {
+  try {
+    const raw = localStorage.getItem('deleted-links');
+    const list = JSON.parse(raw || '[]');
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveDeletedIds(set) {
+  localStorage.setItem('deleted-links', JSON.stringify(Array.from(set)));
+}
+
+function loadManageMode() {
+  return localStorage.getItem('manage-mode') === '1';
+}
+
+function saveManageMode(value) {
+  localStorage.setItem('manage-mode', value ? '1' : '0');
+}
+
+function updateManageOptionLabel() {
+  manageOption.textContent = `管理模式：${manageMode ? '开启' : '关闭'}`;
+  document.body.classList.toggle('manage', manageMode);
+}
+
+function deleteLink(item) {
+  const id = item.id || item.url;
+  if (id && String(id).startsWith('local-')) {
+    extraLinks = extraLinks.filter(x => (x.id || x.url) !== id);
+    saveExtraLinks(extraLinks);
+  } else {
+    deletedIds.add(id);
+    saveDeletedIds(deletedIds);
+  }
+  links = links.filter(x => (x.id || x.url) !== id);
+  render(links);
+}
+function loadPrivateMode() {
+  return localStorage.getItem('private-mode') === '1';
+}
+
+function savePrivateMode(value) {
+  localStorage.setItem('private-mode', value ? '1' : '0');
+}
+
+function updatePrivateOptionLabel() {
+  privateOption.textContent = `私密模式：${privateMode ? '开启' : '关闭'}`;
+}
+
+function buildSortList() {
+  const groups = new Map();
+  for (const item of links) {
+    const catName = getCategoryName(item);
+    if (!groups.has(catName)) groups.set(catName, []);
+    groups.get(catName).push(item);
+  }
+  const all = getAvailableCategories(groups);
+  const ordered = applyCategoryOrder(all);
+  sortList.innerHTML = '';
+  ordered.forEach(name => {
+    const li = document.createElement('li');
+    li.className = 'sort-item';
+    li.dataset.name = name;
+    li.innerHTML = `
+      <span>${escapeHtml(name)}</span>
+      <div class="sort-actions">
+        <button class="sort-btn" type="button" data-dir="up">▲</button>
+        <button class="sort-btn" type="button" data-dir="down">▼</button>
+      </div>
+    `;
+    li.addEventListener('click', e => {
+      const btn = e.target.closest('.sort-btn');
+      if (!btn) return;
+      const dir = btn.dataset.dir;
+      const sib = dir === 'up' ? li.previousElementSibling : li.nextElementSibling;
+      if (!sib) return;
+      if (dir === 'up') {
+        sortList.insertBefore(li, sib);
+      } else {
+        sortList.insertBefore(sib, li);
+      }
+    });
+    sortList.appendChild(li);
+  });
 }
 
 function handleMove(targetContainer) {
@@ -409,3 +1171,16 @@ function handleMove(targetContainer) {
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

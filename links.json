@@ -348,14 +348,29 @@
     "desc": "郭思最爱的壁纸这一块",
     "category": "工具"
   },
+  {
+    "name": "Github主页",
+    "url": "https://wallhaven.cc",
+    "desc": "郭思最爱的壁纸这一块",
+    "category": "工具"
+  },
+  {
+    "name": "Gmail",
+    "url": "https://mail.google.com/",
+    "desc": "Gmail邮件地址",
+    "category": "工具"
+  },
+  
      {
     "name": "海克斯大乱斗",
-    "url": "https://apexlol.info/zh/",
-    "desc": "瑞天地攻略",
-    "category": "游戏"
+    "url": "https://github.com/repos",
+    "desc": "jiaodeshou的主页",
+    "category": "日常"
   }
   
+  
 ]
+
 
 
 

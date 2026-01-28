@@ -360,6 +360,12 @@
     "desc": "Gmail邮件地址",
     "category": "工具"
   },
+    {
+    "name": "Kimi",
+    "url": "https://www.kimi.com/settings",
+    "desc": "国产AI",
+    "category": "AI大模型"
+  },
   
      {
     "name": "Github主页",
@@ -370,6 +376,7 @@
   
   
 ]
+
 
 
 

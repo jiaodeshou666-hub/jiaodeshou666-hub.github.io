@@ -372,6 +372,15 @@
     "desc": "谷歌AI编程",
     "category": "AI大模型"
   },
+
+  {
+    "name": "Google Ai Studio",
+    "url": "https://aistudio.google.com/",
+    "desc": "谷歌AIStudio",
+    "category": "AI大模型"
+  },
+
+
   
      {
     "name": "Github主页",
@@ -382,6 +391,7 @@
   
   
 ]
+
 
 
 

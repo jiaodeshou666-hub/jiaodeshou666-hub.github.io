@@ -366,6 +366,12 @@
     "desc": "国产AI",
     "category": "AI大模型"
   },
+     {
+    "name": "Firebase Studio",
+    "url": "https://studio.firebase.google.com/",
+    "desc": "谷歌AI编程",
+    "category": "AI大模型"
+  },
   
      {
     "name": "Github主页",
@@ -376,6 +382,7 @@
   
   
 ]
+
 
 
 

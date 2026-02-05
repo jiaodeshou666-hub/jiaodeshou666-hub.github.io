@@ -394,7 +394,15 @@
     "category": "鉴赏"
   },
 
-  
+
+
+
+        {
+    "name": "谷歌stitch",
+    "url": "https://stitch.withgoogle.com/?pli=1",
+    "desc": "基于AI的UI设计工具",
+    "category": "AI大模型"
+  },
      {
     "name": "Github主页",
     "url": "https://github.com/repos",
@@ -404,6 +412,7 @@
   
   
 ]
+
 
 
 

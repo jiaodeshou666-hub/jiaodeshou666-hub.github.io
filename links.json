@@ -403,6 +403,18 @@
     "desc": "基于AI的UI设计工具",
     "category": "AI大模型"
   },
+
+
+
+
+       {
+    "name": "Zlibrary",
+    "url": "https://zh.z-lib.fm/",
+    "desc": "电子书下载",
+    "category": "工具"
+  },
+
+  
      {
     "name": "Github主页",
     "url": "https://github.com/repos",
@@ -412,6 +424,7 @@
   
   
 ]
+
 
 
 

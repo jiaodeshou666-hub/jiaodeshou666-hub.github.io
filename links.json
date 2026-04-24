@@ -183,6 +183,14 @@
     "desc": "fny114.pages.dev",
            "category": "飞机"
   },
+
+    {
+    "name": "XLFTD",
+    "url": "https://my.xfltd.org/#/dashboard",
+    "desc": "七块钱一个月",
+           "category": "飞机"
+  },
+  
   {
     "name": "疾风云地址发布页",
     "url": "https://homes.jif9.net/",
@@ -191,6 +199,14 @@
     
     
   },
+
+      {
+    "name": "飞鸟",
+    "url": "https://m.flyingbird.cc/user",
+    "desc": "十五块钱一个月",
+           "category": "飞机"
+  },
+  
 
 
     {

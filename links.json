@@ -244,12 +244,7 @@
                    "category": "日常"
   },
 
-      {
-    "name": "DeepL翻译",
-    "url": "https://www.deepl.com/zh/translator",
-    "desc": "日常翻译",
-                   "category": "日常"
-  },
+
   
   
   
@@ -493,6 +488,13 @@
     "desc": "jiaodeshou的主页",
     "category": "日常"
   }
+
+        {
+    "name": "DeepL翻译",
+    "url": "https://www.deepl.com/zh/translator",
+    "desc": "日常翻译",
+                   "category": "日常"
+  },
   
   
 ]

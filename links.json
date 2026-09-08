@@ -195,6 +195,19 @@
         "category": "AI大模型"
   },
 
+    {
+    "name": "大树API",
+    "url": "https://api.shuxiashu.top/wallet",
+    "desc": "比较便宜，gork免费",
+        "category": "AI大模型"
+  },
+
+      {
+    "name": "LuminAPI",
+    "url": "https://ai.luminai.cc/console",
+    "desc": "稍微贵，但是比较稳",
+        "category": "AI大模型"
+  },
 
 
   

@@ -123,9 +123,9 @@
     "category": "AI大模型"
   },
   {
-    "name": "Google AI Studio",
-    "url": "https://aistudio.google.com/prompts/1-w_wEVFqQbRgalibuFndWxHmmSAeiG1A",
-    "desc": "aistudio.google.com",
+    "name": "大模型排行",
+    "url": "https://llm2014.github.io/llm_benchmark/",
+    "desc": "可查看当前主流模型能力",
         "category": "AI大模型"
   },
   {

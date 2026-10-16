@@ -113,7 +113,13 @@
     "desc": "www.aconvert.com",
             "category": "工具"
   },
-
+  
+  {
+    "name": "mineru解析文档",
+    "url": "https://mineru.net/",
+    "desc": "用于输出给AI",
+            "category": "工具"
+  },
 
   
   {

@@ -107,21 +107,21 @@
 
   {
     "name": "Learn Arduino",
-    "url": "learn-arduino-red.vercel.app/zh/",
+    "url": "https://learn-arduino-red.vercel.app/zh/",
     "desc": "可视化ESP32主板",
             "category": "学习"
   },
 
   {
     "name": "ESP Labs",
-    "url": "esp-labs-web.vercel.app",
+    "url": "https://esp-labs-web.vercel.app",
     "desc": "ESP32在线实验室",
             "category": "学习"
   },
 
     {
     "name": "ESP Labs Github 源码",
-    "url": "github.com/agharsallah/esp-labs-web",
+    "url": "https://github.com/agharsallah/esp-labs-web",
     "desc": "ESP Labs源码",
             "category": "学习"
   },
@@ -129,14 +129,14 @@
 
       {
     "name": "ESP Labs Github 套件",
-    "url": "github.com/agharsallah/esp-labs",
+    "url": "https://github.com/agharsallah/esp-labs",
     "desc": "ESP Labs套件",
             "category": "学习"
   },
 
         {
     "name": "乐鑫 esp-emulator",
-    "url": "github.com/espressif/esp-emulator",
+    "url": "https://github.com/espressif/esp-emulator",
     "desc": "乐鑫ESP模拟器",
             "category": "学习"
   },

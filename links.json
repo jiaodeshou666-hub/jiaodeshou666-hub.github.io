@@ -112,6 +112,15 @@
             "category": "学习"
   },
 
+ 
+
+    {
+    "name": "32在线仿真",
+    "url": " https://velxio.dev/zh-cn",
+    "desc": "ESP32在线仿真",
+            "category": "学习"
+  },
+  
   {
     "name": "ESP Labs",
     "url": "https://esp-labs-web.vercel.app",

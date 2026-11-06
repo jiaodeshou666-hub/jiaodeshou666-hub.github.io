@@ -180,6 +180,15 @@
     "desc": "chat.deepseek.com",
     "category": "AI大模型"
   },
+
+
+  {
+    "name": "中转站集中站",
+    "url": "https://ztest.ai/",
+    "desc": "中转测试与集合",
+    "category": "AI大模型"
+  },
+  
   {
     "name": "大模型排行",
     "url": "https://llm2014.github.io/llm_benchmark/",

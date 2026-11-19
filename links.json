@@ -307,6 +307,13 @@
     "desc": "十五块钱一个月",
            "category": "飞机"
   },
+
+        {
+    "name": "飞鸟加速",
+    "url": "https://direct.fnjs.cloud/mo",
+    "desc": "35一个月但很快",
+           "category": "飞机"
+  },
   
 
 
@@ -597,7 +604,14 @@
     "desc": "搜寻的第二个论坛",
     "category": "鉴赏"
   },
+
   
+         {
+    "name": "推特鉴赏",
+    "url": "https://nv-pu-sa.pages.dev/",
+    "desc": "完美推特热点",
+    "category": "鉴赏"
+  },
   
   
      {
